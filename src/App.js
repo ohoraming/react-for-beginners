@@ -6,19 +6,31 @@ function App() {
 
   const onClick = () => setValue((prev) => prev + 1);
   
-  // 3. 함수가 작동할 때마다 인자로 event를 받음
-  const onChange = (event) => setKeyword(event.target.value); // 4. event를 발생시킨 input에서 value를 받아 keyword state에 넣음
+  const onChange = (event) => setKeyword(event.target.value);
 
-  console.log("i run all the time");
+  console.log("I run all the time"); // 매번 실행
+  
   useEffect(() => {
-    console.log("CALL THE API...")
+    console.log("I run only once"); // 최초 한 번만 실행
   }, []);
-  console.log("SEARCH FOR", keyword);
+  
+  useEffect(() => {
+    console.log("I run when 'keyword' changes"); // keyword의 변화가 있을 때만 실행
+  }, [keyword]);
+
+  useEffect(() => {
+    console.log("I run when 'counter' changes"); // counter의 변화가 있을 때만 실행
+  }, [counter]);
+  
+  useEffect(() => {
+    console.log("I run when 'keyword' or 'counter' changes"); // keyword 또는 counter의 변화가 있을 때만 실행
+  }, [keyword, counter]);
+
   return (
     <div>
-      <input // 1. input 생성
-        value={keyword} // 5. keyword를 가져와 input의 value로 사용
-        onChange={onChange} // 2. eventListener연결
+      <input
+        value={keyword}
+        onChange={onChange}
         type="text" 
         placeholder="Search here..."
       />
