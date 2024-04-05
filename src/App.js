@@ -1,9 +1,18 @@
 import { useState, useEffect } from "react";
 
 function Hello() {
-  useEffect(() => {
-    console.log("I'm Here!");
+  useEffect(function () {
+    console.log("hi :)")
+    return function () {
+      console.log("bye :(");
+    }
   }, []);
+
+  useEffect(() => {
+    console.log("hi :)")
+    return () => console.log("bye :(");
+  }, []);
+  
   return <h1>Hello</h1>;
 }
 
