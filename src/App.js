@@ -9,11 +9,14 @@ function App() {
     if (toDo === "") { // toDo가 비어있으면 return
       return;
     }
+    setToDos((currentArray) => [toDo, ...currentArray]); // input을 통해 입력받은 toDo와 빈 array의 element가 더해짐
     setToDo(""); // input 초기화
-    setToDos(currentArray => [toDo, ...currentArray]);
   };
+  console.log(toDos);
+  // console.log(toDos.map((item, index) => (<li key={index}>{item}</li>)));
   return (
     <div>
+      <h1>My To Dos ({toDos.length})</h1> {/*javascript code 추가*/}
       <form onSubmit={onSubmit}> {/* Form */}
         <input 
           onChange={onChange}
@@ -23,6 +26,10 @@ function App() {
         />
         <button>Add To Do</button>
       </form>
+      <hr />
+      <ul>
+        {toDos.map((item, index) => (<li key={index}>{item}</li>))}
+      </ul>
     </div>
   );
 }
