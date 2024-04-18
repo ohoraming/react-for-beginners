@@ -1,53 +1,37 @@
 import { useEffect, useState } from "react";
+import Movie from "./Movie";
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [coins, setCoins] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const getMovies = async() => {
+    const json = await (
+      await fetch("https://yts.mx/api/v2/list_movies.json?minimum_rating=9&sort_by=year")
+    ).json();
+    setMovies(json.data.movies); // 영화 정보
+    setLoading(false); // 로딩이 끝났으므로 false로 update
+  }
   useEffect(() => {
-    fetch("https://api.coinpaprika.com/v1/tickers")
-    .then(response => response.json())
-    .then((json) => {
-      setCoins(json);
-      setLoading(false);
-    });
+    getMovies();
   }, []); // useEffect 빈 배열(아무것도 주시하지 않는 상태)은 최초 한 번만 작동함
-  const [myMoney, setMyMoney] = useState(0);
-  const [amount, setAmount] = useState(0);
-  const onChange = (event) => {
-    setMyMoney(event.target.value);
-    console.log(event.target.value);
-  }
-  const onChangeSelect = (event) => {
-    setAmount(event.target.value);
-    console.log(event.target.value);
-  }
-  const usdToCoin = () => {
-    return amount > 0 ? (myMoney / amount) : 0;
-  }
+  console.log(movies);
   return (
     <div>
-      <h1>coin converter</h1>
-      <span>USD → </span>
-      <select onChange={onChangeSelect}>
-        <option value="0">선택</option>
-        {coins.map((coin) => (
-          <option 
-            key={coin.id}
-            value={coin.quotes.USD.price}
-          >
-            {coin.name}({coin.symbol})
-          </option>
-        ))}
-      </select>
-      <div>
-        <input 
-          type="number"
-          onChange={onChange}
-          value={myMoney}
-          placeholder="USD 입력"
-        /> USD =
-        <span>{usdToCoin()}</span>
-      </div>
+      {loading ? (
+        <h1>"Loading..."</h1>
+      ) : (
+        <div>
+          {movies.map((movie) => (
+            <Movie
+              key={movie.id}
+              cover_image={movie.medium_cover_image} 
+              title={movie.title} 
+              summary={movie.summary} 
+              genres={movie.genres} 
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
