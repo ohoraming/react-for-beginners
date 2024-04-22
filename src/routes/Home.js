@@ -16,7 +16,6 @@ function Home() {
   useEffect(() => {
     getMovies();
   }, []); // useEffect 빈 배열(아무것도 주시하지 않는 상태)은 최초 한 번만 작동함
-  console.log(movies);
   return (
     <div>
       {loading ? (
@@ -26,6 +25,7 @@ function Home() {
           {movies.map((movie) => (
             <Movie
               key={movie.id}
+              id={movie.id}
               cover_image={movie.medium_cover_image}
               title={movie.title}
               summary={movie.summary}
